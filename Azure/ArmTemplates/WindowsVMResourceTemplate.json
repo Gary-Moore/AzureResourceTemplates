@@ -28,7 +28,9 @@
         }
     }
     },
-    "variables": {},
+    "variables": {
+        "publicIpName": "[concat(parameters('vmName'), '-PublicIP')]"
+    },
     "resources": [
         {
             "type": "Microsoft.Storage/storageAccounts",
@@ -45,7 +47,7 @@
         {
             "apiVersion": "2015-06-15",
             "type": "Microsoft.Network/publicIPAddresses",
-            "name": "[concat(parameters('vmName'), '-PublicIP')]",
+            "name": "[variables('publicIpName')]",
             "location": "[resourceGroup().location]",
             "tags": {
                 "displayName": "PublicIPAddress"
@@ -87,7 +89,7 @@
             "name": "WindowsVM1-NetworkInterface",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "Microsoft.Network/publicIPAddresses/WindowsVM1-PublicIP",
+                "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIpName'))]",
                 "Microsoft.Network/virtualNetworks/WindowsVM1-VirtualNetwork"
             ],
             "tags": {
